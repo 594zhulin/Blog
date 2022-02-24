@@ -1,20 +1,23 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const article = require('./api/article');
+const category = require('./api/category');
+const comment = require('./api/comment');
+const user = require('./api/user');
+const index = require('./api/index');
 
-var app = express();
+const app = express();
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/article', article);
+app.use('/api/category', category);
+app.use('/api/comment', comment);
+app.use('/api/user', user);
+app.use('/api', index);
 
-module.exports = app;
+app.listen(3000);
+console.log('success listen at port:3000......');
