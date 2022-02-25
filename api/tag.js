@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
         const { name } = req.body;
         const sql = 'INSERT INTO tag(name) VALUES(?)';
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/', async (req, res) => {
+router.put('/update', async (req, res) => {
     try {
         const { id, name } = req.body;
         const sql = 'UPDATE tag SET name=? WHERE id=?';
@@ -34,7 +34,7 @@ router.put('/', async (req, res) => {
     }
 })
 
-router.delete('/', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     try {
         const { id } = req.body;
         const sql = 'DELETE FROM tag WHERE id=?';

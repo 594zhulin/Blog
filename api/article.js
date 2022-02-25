@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
         const { title, categoryId, tagId, content, thumbnail } = req.body;
         const sql = 'INSERT INTO article(title, categoryId, tagId, content, thumbnail) VALUES(?,?,?,?,?)';
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/', async (req, res) => {
+router.put('/update', async (req, res) => {
     try {
         const { id, title, categoryId, tagId, content, thumbnail } = req.body;
         const sql = 'UPDATE article SET title=?,categoryId=?,tagId=?,content=?,thumbnail=? WHERE id=?';
@@ -34,7 +34,7 @@ router.put('/', async (req, res) => {
     }
 })
 
-router.delete('/', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     try {
         const { id } = req.body;
         const sql = 'DELETE FROM article WHERE id=?';

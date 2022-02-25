@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
         const { avatar, username, content, articleId } = req.body;
         const sql = 'INSERT INTO comment(avatar, username, content, articleId) VALUES(?,?,?,?)';
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/', async (req, res) => {
+router.put('/update', async (req, res) => {
     try {
         const { id, avatar, username, content, articleId } = req.body;
         const sql = 'UPDATE comment SET avatar=?,username=?,content=?,articleId=? WHERE id=?';
@@ -34,7 +34,7 @@ router.put('/', async (req, res) => {
     }
 })
 
-router.delete('/', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     try {
         const { id } = req.body;
         const sql = 'DELETE FROM comment WHERE id=?';

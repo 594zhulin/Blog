@@ -12,20 +12,9 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.put('/update', async (req, res) => {
     try {
-        const { avatar, username, birthday, sex } = req.body;
-        const sql = 'INSERT INTO user(avatar, username, birthday, sex) VALUES(?,?,?,?)';
-        const result = await connection(sql, [avatar, username, birthday, sex]);
-        res.json(result);
-    } catch (error) {
-        console.log(error);
-    }
-})
-
-router.put('/', async (req, res) => {
-    try {
-        const { id, avatar, username, birthday, sex} = req.body;
+        const { id, avatar, username, birthday, sex } = req.body;
         const sql = 'UPDATE user SET avatar=?,username=?,birthday=?,sex=? WHERE id=?';
         const result = await connection(sql, [avatar, username, birthday, sex, id]);
         res.json(result);
@@ -34,7 +23,7 @@ router.put('/', async (req, res) => {
     }
 })
 
-router.delete('/', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     try {
         const { id } = req.body;
         const sql = 'DELETE FROM user WHERE id=?';
