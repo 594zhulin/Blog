@@ -18,7 +18,7 @@ const connection = (sql, data) => {
                     if (err) {
                         reject(err);
                     } else {
-                        const res = rows.affectedRows ? { code: 0, message: 'success' } : { code: 0, message: 'success', data: rows };
+                        const res = rows instanceof Array ? { code: 0, message: 'success', data: rows } : rows.affectedRows && rows.affectedRows === 1 ? { code: 0, message: 'success' } : { code: 0, message: '操作失败' };
                         resolve(res);
                     }
                     connection.destroy();

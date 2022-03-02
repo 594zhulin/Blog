@@ -2,7 +2,7 @@ const express = require('express');
 const connection = require('../config/db');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/get', async (req, res) => {
     try {
         const sql = 'SELECT * FROM tag';
         const result = await connection(sql);
