@@ -15,6 +15,16 @@ router.get("/get", async (req, res) => {
   }
 });
 
+/**
+ * 用户注册
+ * @route POST /api/user/register
+ * @group 用户
+ * @param {string} username.body.required - 请输入用户名
+ * @param {string} password.body.required - 请输入密码
+ * @returns {object} 200 - An array of user info
+ * @returns {Error}  default - Unexpected error
+ * @security JWT
+ */
 router.post(
   "/register",
   [

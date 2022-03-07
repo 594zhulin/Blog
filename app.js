@@ -3,13 +3,15 @@ const path = require("path");
 const expressJwt = require("express-jwt");
 const { secret, getToken } = require("./config/token");
 
+const app = express();
+
+const expressSwagger = require("express-swagger-generator")(app)
+
 const article = require("./api/article");
 const category = require("./api/category");
 const comment = require("./api/comment");
 const tag = require("./api/tag");
 const user = require("./api/user");
-
-const app = express();
 
 app.use(express.json());
 app.use(
@@ -39,7 +41,7 @@ app.use(
     secret,
     algorithms: ["HS256"],
   }).unless({
-    path: ["/api/user/register", "/api/user/login"], //除了这个地址，其他的URL都需要验证
+    path: ["/api/user/register", "/api/user/login", /\/swagger/i],
   })
 );
 
@@ -59,6 +61,35 @@ app.use("/api/category", category);
 app.use("/api/comment", comment);
 app.use("/api/tag", tag);
 app.use("/api/user", user);
+
+let options = {
+  swaggerDefinition: {
+    info: {
+      description: 'This is a sample server',
+      title: 'Swagger',
+      version: '1.0.0'
+    },
+    host: 'localhost:3000',
+    basePath: '/',
+    produces: ['application/json', 'application/xml'],
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+      JWT: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: ''
+      }
+    }
+  },
+  route: {
+    url: '/swagger',
+    docs: '/swagger.json' //swagger文件 api
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./api/*.js'] //Path to the API handle folder
+}
+expressSwagger(options)
 
 app.listen(3000);
 console.log("success listen at port:3000......");
