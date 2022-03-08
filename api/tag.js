@@ -4,6 +4,28 @@ const validator = require("../config/validator");
 const connection = require("../config/db");
 const router = express.Router();
 
+/**
+ * @typedef Tag
+ * @property {string} name.required - 名称
+ */
+
+/**
+ * @typedef TagId
+ * @property {string} id.required - id
+ */
+
+/**
+ * @typedef Response
+ * @property {number} code
+ * @property {string} message
+ * @property {array<object>} data
+ */
+
+/**
+ * @route GET /tag/get
+ * @group 标签
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.get("/get", async (req, res) => {
   try {
     const sql = "SELECT * FROM tag";
@@ -14,6 +36,12 @@ router.get("/get", async (req, res) => {
   }
 });
 
+/**
+ * @route POST /tag/add
+ * @group 标签
+ * @param {Tag.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.post(
   "/add",
   [check("name").notEmpty().withMessage("name不能为空").isString()],
@@ -29,6 +57,13 @@ router.post(
   })
 );
 
+/**
+ * @route PUT /tag/update
+ * @group 标签
+ * @param {Tag.model} body.body.required
+ * @param {TagId.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.put(
   "/update",
   [
@@ -47,6 +82,12 @@ router.put(
   })
 );
 
+/**
+ * @route DELETE /tag/delete
+ * @group 标签
+ * @param {TagId.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.delete(
   "/delete",
   [check("id").notEmpty().withMessage("id不能为空").isString()],

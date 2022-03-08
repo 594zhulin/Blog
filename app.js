@@ -65,12 +65,12 @@ app.use("/api/user", user);
 let options = {
   swaggerDefinition: {
     info: {
-      description: 'This is a sample server',
+      description: '',
       title: 'Swagger',
       version: '1.0.0'
     },
     host: 'localhost:3000',
-    basePath: '/',
+    basePath: '/api',
     produces: ['application/json', 'application/xml'],
     schemes: ['http', 'https'],
     securityDefinitions: {

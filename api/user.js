@@ -5,6 +5,38 @@ const connection = require("../config/db");
 const { setToken } = require("../config/token");
 const router = express.Router();
 
+/**
+ * @typedef User
+ * @property {string} username.required - 用户名
+ * @property {string} password.required - 密码
+ */
+
+/**
+ * @typedef UserInfo
+ * @property {string} id.required - id
+ * @property {string} avatar.required - 头像
+ * @property {string} username.required - 用户名
+ * @property {string} birthday.required - 生日
+ * @property {number} sex.required - 性别
+ */
+
+/**
+ * @typedef UserId
+ * @property {string} id.required - id
+ */
+
+/**
+ * @typedef Response
+ * @property {number} code
+ * @property {string} message
+ * @property {array<object>} data
+ */
+
+/**
+ * @route GET /user/get
+ * @group 用户
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.get("/get", async (req, res) => {
   try {
     const sql = "SELECT * FROM user";
@@ -16,14 +48,10 @@ router.get("/get", async (req, res) => {
 });
 
 /**
- * 用户注册
- * @route POST /api/user/register
+ * @route POST /user/register
  * @group 用户
- * @param {string} username.body.required - 请输入用户名
- * @param {string} password.body.required - 请输入密码
- * @returns {object} 200 - An array of user info
- * @returns {Error}  default - Unexpected error
- * @security JWT
+ * @param {User.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
  */
 router.post(
   "/register",
@@ -56,6 +84,12 @@ router.post(
   })
 );
 
+/**
+ * @route POST /user/login
+ * @group 用户
+ * @param {User.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.post(
   "/login",
   [
@@ -99,6 +133,12 @@ router.post(
   })
 );
 
+/**
+ * @route PUT /user/update
+ * @group 用户
+ * @param {UserInfo.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.put(
   "/update",
   [
@@ -135,6 +175,12 @@ router.put(
   })
 );
 
+/**
+ * @route DELETE /user/delete
+ * @group 用户
+ * @param {UserId.model} body.body.required
+ * @returns {Response.model} 200 - 	successful operation
+ */
 router.delete(
   "/delete",
   [check("id").notEmpty().withMessage("id不能为空").isString()],
