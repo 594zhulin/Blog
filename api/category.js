@@ -5,26 +5,48 @@ const connection = require("../config/db");
 const router = express.Router();
 
 /**
- * @typedef Category
- * @property {string} name.required - 名称
+ * @typedef CategoryAddParams
+ * @property {string} parentId.required - 父级分类id
+ * @property {string} name.required - 分类名称
  */
 
 /**
- * @typedef CategoryId
- * @property {string} id.required - id
+ * @typedef CategoryUpdateParams
+ * @property {string} id.required - 分类id
+ * @property {string} name.required - 分类名称
+ * @property {string} parentId.required - 父级分类id
  */
 
 /**
- * @typedef Response
+ * @typedef CategoryDeleteParams
+ * @property {string} id.required - 分类id
+ */
+
+/**
+ * @typedef CommonResponse
  * @property {number} code
  * @property {string} message
- * @property {array<object>} data
+ */
+
+/**
+ * @typedef CategoryItem
+ * @property {string} id - 分类id
+ * @property {string} name - 分类名称
+ * @property {string} parentId - 父级分类id
+ * @property {string} parentName - 父级分类名称
+ */
+
+/**
+ * @typedef CategoryListResponse
+ * @property {number} code
+ * @property {string} message
+ * @property {CategoryItem[]} data
  */
 
 /**
  * @route GET /category/get
  * @group 分类
- * @returns {Response.model} 200 - 	successful operation
+ * @returns {CategoryListResponse.model} 200 - 	successful operation
  */
 router.get("/get", async (req, res) => {
   try {
@@ -39,8 +61,8 @@ router.get("/get", async (req, res) => {
 /**
  * @route POST /category/add
  * @group 分类
- * @param {Category.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @param {CategoryAddParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.post(
   "/add",
@@ -60,9 +82,8 @@ router.post(
 /**
  * @route PUT /category/update
  * @group 分类
- * @param {Category.model} body.body.required
- * @param {CategoryId.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @param {CategoryUpdateParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.put(
   "/update",
@@ -85,8 +106,8 @@ router.put(
 /**
  * @route DELETE /category/delete
  * @group 分类
- * @param {CategoryId.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @param {CategoryDeleteParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.delete(
   "/delete",

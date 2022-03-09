@@ -12,7 +12,7 @@ const router = express.Router();
  */
 
 /**
- * @typedef UserInfo
+ * @typedef UserItem
  * @property {string} id.required - id
  * @property {string} avatar.required - 头像
  * @property {string} username.required - 用户名
@@ -21,21 +21,27 @@ const router = express.Router();
  */
 
 /**
- * @typedef UserId
+ * @typedef UserDeleteParams
  * @property {string} id.required - id
  */
 
 /**
- * @typedef Response
+ * @typedef CommonResponse
  * @property {number} code
  * @property {string} message
- * @property {array<object>} data
+ */
+
+/**
+ * @typedef UserListResponse
+ * @property {number} code
+ * @property {string} message
+ * @property {UserItem[]} data
  */
 
 /**
  * @route GET /user/get
  * @group 用户
- * @returns {Response.model} 200 - 	successful operation
+ * @returns {UserListResponse.model} 200 - 	successful operation
  */
 router.get("/get", async (req, res) => {
   try {
@@ -51,7 +57,7 @@ router.get("/get", async (req, res) => {
  * @route POST /user/register
  * @group 用户
  * @param {User.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.post(
   "/register",
@@ -88,7 +94,7 @@ router.post(
  * @route POST /user/login
  * @group 用户
  * @param {User.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.post(
   "/login",
@@ -136,8 +142,8 @@ router.post(
 /**
  * @route PUT /user/update
  * @group 用户
- * @param {UserInfo.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @param {UserItem.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.put(
   "/update",
@@ -178,8 +184,8 @@ router.put(
 /**
  * @route DELETE /user/delete
  * @group 用户
- * @param {UserId.model} body.body.required
- * @returns {Response.model} 200 - 	successful operation
+ * @param {UserDeleteParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.delete(
   "/delete",

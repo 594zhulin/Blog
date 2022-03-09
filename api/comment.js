@@ -4,16 +4,73 @@ const validator = require("../config/validator");
 const connection = require("../config/db");
 const router = express.Router();
 
-router.get("/get", async (req, res) => {
-  try {
-    const sql = "SELECT * FROM comment";
-    const result = await connection(sql);
-    res.json(result);
-  } catch (error) {
-    console.log(error);
-  }
-});
+/**
+ * @typedef CommentAddParams
+ * @property {string} userId.required - 用户id
+ * @property {string} content.required - 内容
+ * @property {string} articleId.required - 文章id
+ */
 
+/**
+ * @typedef CommentUpdateParams
+ * @property {string} id.required - 评论id
+ * @property {string} userId.required - 用户id
+ * @property {string} content.required - 内容
+ * @property {string} articleId.required - 文章id
+ */
+
+/**
+ * @typedef CommentDeleteParams
+ * @property {string} id.required - 评论id
+ */
+
+/**
+ * @typedef CommonResponse
+ * @property {number} code
+ * @property {string} message
+ */
+
+/**
+ * @typedef CommentItem
+ * @property {string} id - 评论id
+ * @property {string} username - 用户名
+ * @property {string} avatar - 头像
+ * @property {string} content - 内容
+ * @property {string} publishTime - 发布时间
+ */
+
+/**
+ * @typedef CommentListResponse
+ * @property {number} code
+ * @property {string} message
+ * @property {CommentItem[]} data
+ */
+
+/**
+ * @route GET /comment/get
+ * @param {string} articleId.query.required - 文章id
+ * @group 评论
+ * @returns {CommentListResponse.model} 200 - 	successful operation
+ */
+router.get("/get", [
+  check("articleId").notEmpty().withMessage("articleId不能为空").isString()], validator(async (req, res) => {
+    try {
+      const { articleId } = req.query;
+      const sql = "SELECT * FROM comment WHERE articleId=?";
+      const result = await connection(sql, [articleId]);
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+    }
+  })
+);
+
+/**
+ * @route POST /comment/add
+ * @group 评论
+ * @param {CommentAddParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
+ */
 router.post(
   "/add",
   [
@@ -40,6 +97,12 @@ router.post(
   })
 );
 
+/**
+ * @route PUT /comment/update
+ * @group 评论
+ * @param {CommentUpdateParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
+ */
 router.put(
   "/update",
   [
@@ -68,6 +131,12 @@ router.put(
   })
 );
 
+/**
+ * @route DELETE /comment/delete
+ * @group 评论
+ * @param {CommentDeleteParams.model} body.body.required
+ * @returns {CommonResponse.model} 200 - 	successful operation
+ */
 router.delete(
   "/delete",
   [check("id").notEmpty().withMessage("id不能为空").isString()],
