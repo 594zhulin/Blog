@@ -6,17 +6,17 @@ const router = express.Router();
 
 /**
  * @typedef CommentAddParams
- * @property {string} userId.required - 用户id
+ * @property {string} user_id.required - 用户id
  * @property {string} content.required - 内容
- * @property {string} articleId.required - 文章id
+ * @property {string} article_id.required - 文章id
  */
 
 /**
  * @typedef CommentUpdateParams
  * @property {string} id.required - 评论id
- * @property {string} userId.required - 用户id
+ * @property {string} user_id.required - 用户id
  * @property {string} content.required - 内容
- * @property {string} articleId.required - 文章id
+ * @property {string} article_id.required - 文章id
  */
 
 /**
@@ -36,7 +36,7 @@ const router = express.Router();
  * @property {string} username - 用户名
  * @property {string} avatar - 头像
  * @property {string} content - 内容
- * @property {string} publishTime - 发布时间
+ * @property {string} publish_time - 发布时间
  */
 
 /**
@@ -48,16 +48,16 @@ const router = express.Router();
 
 /**
  * @route GET /comment/get
- * @param {string} articleId.query.required - 文章id
+ * @param {string} article_id.query.required - 文章id
  * @group 评论
  * @returns {CommentListResponse.model} 200 - 	successful operation
  */
 router.get("/get", [
-  check("articleId").notEmpty().withMessage("articleId不能为空").isString()], validator(async (req, res) => {
+  check("article_id").notEmpty().withMessage("articleId不能为空").isString()], validator(async (req, res) => {
     try {
-      const { articleId } = req.query;
-      const sql = "SELECT * FROM comment WHERE articleId=?";
-      const result = await connection(sql, [articleId]);
+      const { article_id } = req.query;
+      const sql = "SELECT * FROM comment WHERE article_id=?";
+      const result = await connection(sql, [article_id]);
       res.json(result);
     } catch (error) {
       console.log(error);
@@ -77,18 +77,18 @@ router.post(
     check("avatar").notEmpty().withMessage("avatar不能为空").isString(),
     check("username").notEmpty().withMessage("username不能为空").isString(),
     check("content").notEmpty().withMessage("content不能为空").isString(),
-    check("articleId").notEmpty().withMessage("articleId不能为空").isString(),
+    check("article_id").notEmpty().withMessage("articleId不能为空").isString(),
   ],
   validator(async (req, res) => {
     try {
-      const { avatar, username, content, articleId } = req.body;
+      const { avatar, username, content, article_id } = req.body;
       const sql =
-        "INSERT INTO comment(avatar, username, content, articleId) VALUES(?,?,?,?)";
+        "INSERT INTO comment(avatar, username, content, article_id) VALUES(?,?,?,?)";
       const result = await connection(sql, [
         avatar,
         username,
         content,
-        articleId,
+        article_id,
       ]);
       res.json(result);
     } catch (error) {
@@ -110,18 +110,18 @@ router.put(
     check("avatar").notEmpty().withMessage("avatar不能为空").isString(),
     check("username").notEmpty().withMessage("username不能为空").isString(),
     check("content").notEmpty().withMessage("content不能为空").isString(),
-    check("articleId").notEmpty().withMessage("articleId不能为空").isString(),
+    check("article_id").notEmpty().withMessage("articleId不能为空").isString(),
   ],
   validator(async (req, res) => {
     try {
-      const { id, avatar, username, content, articleId } = req.body;
+      const { id, avatar, username, content, article_id } = req.body;
       const sql =
-        "UPDATE comment SET avatar=?,username=?,content=?,articleId=? WHERE id=?";
+        "UPDATE comment SET avatar=?,username=?,content=?,article_id=? WHERE id=?";
       const result = await connection(sql, [
         avatar,
         username,
         content,
-        articleId,
+        article_id,
         id,
       ]);
       res.json(result);

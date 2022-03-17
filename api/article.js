@@ -12,7 +12,7 @@ const router = express.Router();
 /**
  * @typedef ArticleAddParams
  * @property {string} title.required - 标题
- * @property {string} categoryId.required - 分类id
+ * @property {string} category_id.required - 分类id
  * @property {TagItem[]} tags.required - 标签
  * @property {string} content.required - 内容
  * @property {string} thumbnail.required - 缩略图
@@ -22,7 +22,7 @@ const router = express.Router();
  * @typedef ArticleUpdateParams
  * @property {string} id.required - 文章id
  * @property {string} title.required - 标题
- * @property {string} categoryId.required - 分类id
+ * @property {string} category_id.required - 分类id
  * @property {TagItem[]} tags.required - 标签
  * @property {string} content.required - 内容
  * @property {string} thumbnail.required - 缩略图
@@ -45,14 +45,14 @@ const router = express.Router();
  * @property {string} id - 文章id
  * @property {string} title - 标题
  * @property {string} category - 分类名称
- * @property {string} categoryId - 分类id
+ * @property {string} category_id - 分类id
  * @property {TagItem[]} tags - 标签名称
  * @property {string} content - 内容
  * @property {string} summary - 简介
  * @property {string} author - 作者
  * @property {string} thumbnail - 缩略图
- * @property {string} publishTime - 发布时间
- * @property {string} updateTime - 更新时间
+ * @property {string} publish_time - 发布时间
+ * @property {string} update_time - 更新时间
  * @property {number} hits - 点击量
  * @property {number} views - 阅读量
  * @property {number} shares - 转发量
@@ -95,19 +95,19 @@ router.post(
   "/add",
   [
     check("title").notEmpty().withMessage("title不能为空").isString(),
-    check("categoryId").notEmpty().withMessage("categoryId不能为空").isString(),
+    check("category_id").notEmpty().withMessage("categoryId不能为空").isString(),
     check("tagId").notEmpty().withMessage("tagId不能为空").isString(),
     check("content").notEmpty().withMessage("content不能为空").isString(),
     check("thumbnail").notEmpty().withMessage("thumbnail不能为空").isString(),
   ],
   validator(async (req, res) => {
     try {
-      const { title, categoryId, tagId, content, thumbnail } = req.body;
+      const { title, category_id, tagId, content, thumbnail } = req.body;
       const sql =
-        "INSERT INTO article(title, categoryId, tagId, content, thumbnail) VALUES(?,?,?,?,?)";
+        "INSERT INTO article(title, category_id, tagId, content, thumbnail) VALUES(?,?,?,?,?)";
       const result = await connection(sql, [
         title,
-        categoryId,
+        category_id,
         tagId,
         content,
         thumbnail,
@@ -130,19 +130,19 @@ router.put(
   [
     check("id").notEmpty().withMessage("id不能为空").isString(),
     check("title").notEmpty().withMessage("title不能为空").isString(),
-    check("categoryId").notEmpty().withMessage("categoryId不能为空").isString(),
+    check("category_id").notEmpty().withMessage("categoryId不能为空").isString(),
     check("tagId").notEmpty().withMessage("tagId不能为空").isString(),
     check("content").notEmpty().withMessage("content不能为空").isString(),
     check("thumbnail").notEmpty().withMessage("thumbnail不能为空").isString(),
   ],
   validator(async (req, res) => {
     try {
-      const { id, title, categoryId, tagId, content, thumbnail } = req.body;
+      const { id, title, category_id, tagId, content, thumbnail } = req.body;
       const sql =
-        "UPDATE article SET title=?,categoryId=?,tagId=?,content=?,thumbnail=? WHERE id=?";
+        "UPDATE article SET title=?,category_id=?,tagId=?,content=?,thumbnail=? WHERE id=?";
       const result = await connection(sql, [
         title,
-        categoryId,
+        category_id,
         tagId,
         content,
         thumbnail,

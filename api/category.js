@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * @typedef CategoryAddParams
- * @property {string} parentId.required - 父级分类id
+ * @property {string} parent_id - 父级分类id
  * @property {string} name.required - 分类名称
  */
 
@@ -14,7 +14,7 @@ const router = express.Router();
  * @typedef CategoryUpdateParams
  * @property {string} id.required - 分类id
  * @property {string} name.required - 分类名称
- * @property {string} parentId.required - 父级分类id
+ * @property {string} parent_id.required - 父级分类id
  */
 
 /**
@@ -32,7 +32,7 @@ const router = express.Router();
  * @typedef CategoryItem
  * @property {string} id - 分类id
  * @property {string} name - 分类名称
- * @property {string} parentId - 父级分类id
+ * @property {string} parent_id - 父级分类id
  * @property {string} parentName - 父级分类名称
  */
 
@@ -50,7 +50,7 @@ const router = express.Router();
  */
 router.get("/get", async (req, res) => {
   try {
-    const sql = "SELECT * FROM category";
+    const sql = "SELECT * FROM category WHERE FIND_IN_SET(id,query_category_child_list(0))";
     const result = await connection(sql);
     res.json(result);
   } catch (error) {
@@ -61,19 +61,27 @@ router.get("/get", async (req, res) => {
 /**
  * @route POST /category/add
  * @group 分类
- * @param {CategoryAddParams.model} body.body.required
+ * @param {CategoryAddParams.model} body.body
  * @returns {CommonResponse.model} 200 - 	successful operation
  */
 router.post(
   "/add",
-  [check("name").notEmpty().withMessage("name不能为空").isString()],
+  [
+    check("name").notEmpty().withMessage("name不能为空").isString()
+  ],
   validator(async (req, res) => {
     try {
-      const { name } = req.body;
-      const sql = "INSERT INTO category(name) VALUES(?)";
-      const result = await connection(sql, name);
+      const { name, parent_id = 0 } = req.body;
+      const sql = "INSERT IGNORE INTO category(name,parent_id) VALUES(?,?)";
+      const result = await connection(sql, [name, parent_id]);
       res.json(result);
     } catch (error) {
+      if (error.errno === 1062) {
+        res.json({
+          code: -1,
+          message: "分类已存在",
+        });
+      }
       console.log(error);
     }
   })
