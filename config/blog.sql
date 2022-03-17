@@ -11,7 +11,7 @@
  Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 17/03/2022 17:11:49
+ Date: 17/03/2022 17:46:05
 */
 
 SET NAMES utf8mb4;
@@ -114,7 +114,7 @@ BEGIN
 
   WHILE sTempChd IS NOT NULL DO
     SET sTemp = CONCAT(sTemp,',',sTempChd);
-    SELECT GROUP_CONCAT(id) INTO sTempChd FROM treeNodes WHERE FIND_IN_SET(parent_id,sTempChd)>0;
+    SELECT GROUP_CONCAT(id) INTO sTempChd FROM category WHERE FIND_IN_SET(parent_id,sTempChd)>0;
   END WHILE;
   RETURN sTemp;
 END
@@ -138,7 +138,7 @@ BEGIN
 	ELSE
 	SET sParentList = CONCAT(sParentTemp);
 	END IF;
-	SELECT GROUP_CONCAT(parent_id) INTO sParentTemp FROM treeNodes WHERE FIND_IN_SET(id,sParentTemp)>0;
+	SELECT GROUP_CONCAT(parent_id) INTO sParentTemp FROM category WHERE FIND_IN_SET(id,sParentTemp)>0;
 	END WHILE;
 	RETURN sParentList;
 END
