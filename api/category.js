@@ -2,6 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const validator = require("../config/validator");
 const connection = require("../config/db");
+const formatTreeData = require("../utils/util");
 const router = express.Router();
 
 /**
@@ -52,7 +53,8 @@ router.get("/get", async (req, res) => {
   try {
     const sql = "SELECT * FROM category WHERE FIND_IN_SET(id,query_category_child_list(0))";
     const result = await connection(sql);
-    res.json(result);
+    const { code, message, data } = result;
+    res.json({ code, message, data: formatTreeData(data) });
   } catch (error) {
     console.log(error);
   }
@@ -72,7 +74,7 @@ router.post(
   validator(async (req, res) => {
     try {
       const { name, parent_id = 0 } = req.body;
-      const sql = "INSERT IGNORE INTO category(name,parent_id) VALUES(?,?)";
+      const sql = "INSERT INTO category(name,parent_id) VALUES(?,?)";
       const result = await connection(sql, [name, parent_id]);
       res.json(result);
     } catch (error) {
